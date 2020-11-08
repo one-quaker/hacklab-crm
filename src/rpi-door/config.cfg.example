@@ -1,0 +1,6 @@
+doorbot-token: SLACK_TOKEN_HERE
+db-config:
+  server: 127.0.0.1
+  port: 5432
+  user: DB_USERNAME
+  password: DB_USERPASS
