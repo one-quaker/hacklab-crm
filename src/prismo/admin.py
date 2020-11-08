@@ -26,9 +26,10 @@ class UserAccessInline(admin.TabularInline):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(BaseAdmin):
-    list_display = ('username', 'pk', 'door_key', 'full_name', 'like', 'last_update', 'created_at')
+    list_display = ('username', 'pk', 'door_key', 'access_info', 'full_name', 'like', 'last_update', 'created_at')
     list_filter = ('created_at', 'last_update')
     search_fields = ('door_key', 'first_name', 'last_name', 'username')
+    readonly_fields = ('access_info', )
 
     inlines = [
         UserAccessInline,

@@ -28,6 +28,12 @@ class UserProfile(CreatedMixin):
     last_name = models.CharField(max_length=256, blank=True, null=True)
     username = models.CharField(max_length=256, unique=True) # Slack username
     door_key = models.CharField(max_length=16, unique=True)
+    access_info = ArrayField(
+            models.CharField(max_length=16, blank=True),
+            size=32,
+            blank=True,
+            default=list,
+    )
 
     like = models.PositiveIntegerField(blank=True, default=0)
     last_update = models.DateTimeField(blank=True, null=True)
@@ -84,3 +90,11 @@ class SiteConfig(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_delete, sender=UserAccess)
+@receiver(post_save, sender=UserAccess)
+def update_access_info(sender, instance, **kwargs):
+    user = UserProfile.objects.get(pk=instance.user.pk)
+    user.access_info = [x.access for x in UserAccess.objects.filter(user__pk=user.pk)]
+    user.save()
