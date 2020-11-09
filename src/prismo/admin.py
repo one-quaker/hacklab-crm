@@ -35,6 +35,12 @@ class UserProfileAdmin(BaseAdmin):
         UserAccessInline,
     ]
 
+    def access_info(self, obj):
+        return [x.access for x in obj.access_list.all()]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('access_list')
+
 
 @admin.register(UserAccess)
 class UserAccessAdmin(BaseAdmin):
